@@ -105,6 +105,9 @@
   }
 
   window.addEventListener('hashchange', router);
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'acme_session') document.dispatchEvent(new Event('acme:auth'));
+  });
   document.addEventListener('acme:auth', () => {
     const path = location.hash.slice(1) || '/';
     if (routes[path] && routes[path].private && !Auth.current()) router();

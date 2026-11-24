@@ -106,13 +106,13 @@
   });
 
   function init() {
-    if (localStorage.getItem(KEYS.version) !== VERSION) {
+    if (read(KEYS.version, null) !== VERSION) {
       const seed = buildSeed();
       write(KEYS.users, seed.users);
       write(KEYS.exams, seed.exams);
       write(KEYS.attempts, []);
       write(KEYS.version, VERSION);
-      sessionStorage.removeItem(KEYS.session);
+      localStorage.removeItem(KEYS.session);
       return;
     }
     const seed = buildSeed();
@@ -196,12 +196,12 @@
       const u = read(KEYS.users).find(
         (x) => x.email.toLowerCase() === email.trim().toLowerCase() && x.password === password);
       if (!u) return null;
-      sessionStorage.setItem(KEYS.session, u.id);
+      localStorage.setItem(KEYS.session, u.id);
       return u;
     },
-    logout: () => sessionStorage.removeItem(KEYS.session),
+    logout: () => localStorage.removeItem(KEYS.session),
     current() {
-      const id = sessionStorage.getItem(KEYS.session);
+      const id = localStorage.getItem(KEYS.session);
       return id ? read(KEYS.users).find((u) => u.id === id) || null : null;
     }
   };
